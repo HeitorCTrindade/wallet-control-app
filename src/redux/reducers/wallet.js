@@ -21,7 +21,7 @@ const wallet = (state = INITIAL_STATE, payload) => {
     };
   }
   default: return {
-    state,
+    ...state,
   };
   }
 };

@@ -3,16 +3,15 @@ const INITIAL_STATE = {
   email: '',
 };
 
-const user = (state = INITIAL_STATE, payload) => {
-  switch (payload.type) {
+const user = (state = INITIAL_STATE, action) => {
+  console.log(action);
+  switch (action.type) {
   case 'SUCESS_LOGIN': return {
     ...state,
-    user: {
-      email: payload.email,
-    },
+    ...action.payload,
   };
   default: return {
-    state,
+    ...state,
   };
   }
 };
