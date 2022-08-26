@@ -1,3 +1,15 @@
-// configure aqui sua store
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './reducers/index';
 
-// let's go! o/
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk)),
+);
+
+if (window.Cypress) {
+  window.store = store;
+}
+
+export default store;
