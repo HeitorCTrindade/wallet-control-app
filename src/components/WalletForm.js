@@ -122,9 +122,15 @@ class WalletForm extends Component {
 WalletForm.propTypes = {
   getCurrenciesFromApi: PropTypes.func.isRequired,
   saveNewExpense: PropTypes.func.isRequired,
-  currencies: PropTypes.number.isRequired,
-  expenses: PropTypes.number.isRequired,
-  currentConversionValue: PropTypes.number.isRequired,
+  currencies: PropTypes.arrayOf(
+    PropTypes.string.isRequired,
+  ).isRequired,
+  expenses: PropTypes.arrayOf(
+    PropTypes.object.isRequired,
+  ).isRequired,
+  currentConversionValue: PropTypes.shape(
+    PropTypes.object.isRequired,
+  ).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
