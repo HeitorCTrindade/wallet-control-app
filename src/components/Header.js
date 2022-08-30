@@ -12,7 +12,6 @@ class Header extends Component {
       const { ask } = element.exchangeRates[currency];
       const currencyInBrlValue = value * ask;
       totalExpense += currencyInBrlValue;
-      console.log(`${currency} --- ${value} x ${ask} = ${totalExpense}`);
     });
     return totalExpense.toFixed(2);
   };
