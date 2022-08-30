@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAPI } from '../redux/actions';
+import { fetchAPI, addNewExpense } from '../redux/actions';
+
+const DEFAULT_STATE = {
+  value: '',
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+};
 
 class WalletForm extends Component {
-  state = {
-    value: 0,
-    description: '',
-    // currencyInput: '',
-    // methodInput: '',
-    // tagInput: '',
-  };
+  state = DEFAULT_STATE;
 
   componentDidMount() {
     const { getCurrenciesFromApi } = this.props;
@@ -19,35 +21,54 @@ class WalletForm extends Component {
 
   creatCurrencySelectOpitionElement = () => {
     const { currencies } = this.props;
-    console.log(this.props);
+    const { currency } = this.state;
     return (
       <select
-        name="currency-input"
+        name="currency"
         data-testid="currency-input"
+        value={ currency }
+        onChange={ this.handleChanges }
       >
-        { currencies.map((currency) => (
+        { currencies.map((currencyName) => (
           <option
-            key={ currency }
-            value={ currency }
+            key={ currencyName }
+            value={ currencyName }
           >
-            { currency }
+            { currencyName }
           </option>
         ))}
       </select>
     );
   };
 
+  handleChanges = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  handleNewExpenseClickButton = async () => {
+    const { expenses, saveNewExpense } = this.props;
+    const { getCurrenciesFromApi } = this.props;
+    await getCurrenciesFromApi();
+    const { currentConversionValue } = this.props;
+    const newExpense = {
+      id: expenses.length,
+      ...this.state,
+      exchangeRates: currentConversionValue,
+    };
+    saveNewExpense(newExpense);
+    this.setState({ ...DEFAULT_STATE });
+  };
+
   render() {
     const {
       value,
       description,
-      // currencyInput,
-      // methodInput,
-      // tagInput,
+      method,
+      tag,
     } = this.state;
-    return (
+    return ( // colocar dentro de um form quando for revisar!! + semantico
       <section>
-        <div>Bem vindo ao Trybe Wallet!</div>
         <input
           type="number"
           name="value"
@@ -62,35 +83,37 @@ class WalletForm extends Component {
           data-testid="description-input"
           onChange={ this.handleChanges }
         />
-        {/* <label htmlFor="currency-input">Choose a car:</label> */}
         { this.creatCurrencySelectOpitionElement() }
         <select
-          name="method-input"
+          name="method"
           id="method-input"
           data-testid="method-input"
+          value={ method }
+          onChange={ this.handleChanges }
         >
-          <option value="cash">Dinheiro</option>
-          <option value="credit-card">Cartão de crédito</option>
-          <option value="debit-card">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
         </select>
         <select
-          name="tag-input"
+          name="tag"
           id="tag-input"
           data-testid="tag-input"
+          value={ tag }
+          onChange={ this.handleChanges }
         >
-          <option value="alimentacao">Alimentação</option>
-          <option value="lazer">Lazer</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
           <option value="trabalho">Trabalho</option>
-          <option value="transporte">Transporte</option>
-          <option value="saude">Saúde</option>
+          <option value="Trabalho">Transporte</option>
+          <option value="Saúde">Saúde</option>
         </select>
-        {/* <button
+        <button
           type="button"
-          disabled={ isLoginButtonDisabled }
-          onClick={ this.handleLoginClickButton }
+          onClick={ this.handleNewExpenseClickButton }
         >
-          Entrar
-        </button> */}
+          Adicionar despesa
+        </button>
       </section>
     );
   }
@@ -98,14 +121,20 @@ class WalletForm extends Component {
 
 WalletForm.propTypes = {
   getCurrenciesFromApi: PropTypes.func.isRequired,
+  saveNewExpense: PropTypes.func.isRequired,
   currencies: PropTypes.number.isRequired,
+  expenses: PropTypes.number.isRequired,
+  currentConversionValue: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getCurrenciesFromApi: () => dispatch(fetchAPI()) });
+  getCurrenciesFromApi: () => dispatch(fetchAPI()),
+  saveNewExpense: (newExpense) => dispatch(addNewExpense(newExpense)) });
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
+  currentConversionValue: state.wallet.currentConversionValue,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

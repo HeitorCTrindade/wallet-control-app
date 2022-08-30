@@ -4,7 +4,6 @@ const INITIAL_STATE = {
 };
 
 const user = (state = INITIAL_STATE, action) => {
-  console.log(action);
   switch (action.type) {
   case 'SUCESS_LOGIN': return {
     ...state,

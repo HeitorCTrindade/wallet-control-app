@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   expenses: [],
   editor: false,
   idToEdit: 0,
+  currentConversionValue: {},
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -14,11 +15,12 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       currencies: newCurrenciesArray,
+      currentConversionValue: action.data,
     };
   }
   case 'ADD_NEW_EXPENSE': return {
     ...state,
-    ...action,
+    expenses: [...state.expenses, action.payload],
   };
   case 'REMOVE_EXPENSE': {
     const newExpensesArray = state.expenses
