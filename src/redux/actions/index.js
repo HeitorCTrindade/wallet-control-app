@@ -18,9 +18,9 @@ const addNewExpense = (payload) => ({
   payload,
 });
 
-const removeExpense = (payload) => ({
+const removeExpense = (expenseId) => ({
   type: REMOVE_EXPENSE,
-  payload,
+  expenseId,
 });
 
 export function fetchAPI() {

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 class Header extends Component {
   calcTotalExpenses = () => {
     const { expenses } = this.props;
-    console.log(expenses);
     let totalExpense = 0;
     expenses.forEach((element) => {
       const { currency, value } = element;

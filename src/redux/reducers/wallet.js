@@ -24,7 +24,7 @@ const wallet = (state = INITIAL_STATE, action) => {
   };
   case 'REMOVE_EXPENSE': {
     const newExpensesArray = state.expenses
-      .filter((expense) => expense.id === action.expense.id);
+      .filter((expense) => expense.id !== action.expenseId);
     return {
       ...state,
       expenses: newExpensesArray,
