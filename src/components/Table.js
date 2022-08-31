@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeExpense } from '../redux/actions';
+import { removeExpense, allowsEditExpense } from '../redux/actions';
 
 class Table extends Component {
   handleDeleteButton = (expenseId) => {
     const { deleteExpense } = this.props;
     deleteExpense(expenseId);
+  };
+
+  handleEditButton = (expenseId) => {
+    const { editExpense } = this.props;
+    editExpense(expenseId);
   };
 
   fillTableDescription = () => {
@@ -36,6 +41,13 @@ class Table extends Component {
           </td>
           <td className="tg-buh4">Real</td>
           <td className="tg-0lax">
+            <button
+              type="button"
+              onClick={ () => this.handleEditButton(id) }
+              data-testid="edit-btn"
+            >
+              Editar
+            </button>
             <button
               type="button"
               onClick={ () => this.handleDeleteButton(id) }
@@ -82,10 +94,12 @@ class Table extends Component {
 Table.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   deleteExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteExpense: (expenseId) => dispatch(removeExpense(expenseId)) });
+  deleteExpense: (expenseId) => dispatch(removeExpense(expenseId)),
+  editExpense: (expenseId) => dispatch(allowsEditExpense(expenseId)) });
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,

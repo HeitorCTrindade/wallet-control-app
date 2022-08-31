@@ -30,6 +30,29 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: newExpensesArray,
     };
   }
+  case 'ALLOWS_EDIT_EXPENSE': {
+    return {
+      ...state,
+      editor: true,
+      idToEdit: action.idToEdit,
+    };
+  }
+  case 'EDIT_EXPENSE': {
+    console.log(action.payload);
+    const newExpensesArray = state.expenses
+      .map((expense) => {
+        if (expense.id === action.payload.id) {
+          return action.payload;
+        }
+        return expense;
+      });
+    return {
+      ...state,
+      expenses: newExpensesArray,
+      editor: false,
+      idToEdit: 0,
+    };
+  }
   default: return {
     ...state,
   };

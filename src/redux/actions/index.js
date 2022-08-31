@@ -2,6 +2,8 @@ const SUCESS_LOGIN = 'SUCESS_LOGIN';
 const ADD_NEW_EXPENSE = 'ADD_NEW_EXPENSE';
 const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
 const FILL_ARRAY_CURRENCIES = 'FILL_ARRAY_CURRENCIES';
+const ALLOWS_EDIT_EXPENSE = 'ALLOWS_EDIT_EXPENSE';
+const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 const submitLogin = (payload) => ({
   type: SUCESS_LOGIN,
@@ -23,6 +25,16 @@ const removeExpense = (expenseId) => ({
   expenseId,
 });
 
+const allowsEditExpense = (idToEdit) => ({
+  type: ALLOWS_EDIT_EXPENSE,
+  idToEdit,
+});
+
+const editExpense = (payload) => ({
+  type: EDIT_EXPENSE,
+  payload,
+});
+
 export function fetchAPI() {
   return async (dispatch) => {
     // dispatch(requestAPI()); // chama o defult/loading enquanto faz a requisição.
@@ -36,4 +48,11 @@ export function fetchAPI() {
   };
 }
 
-export { submitLogin, addNewExpense, removeExpense, requestCurrenciesFromApi };
+export {
+  submitLogin,
+  addNewExpense,
+  removeExpense,
+  requestCurrenciesFromApi,
+  allowsEditExpense,
+  editExpense,
+};
