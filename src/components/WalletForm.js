@@ -115,13 +115,14 @@ class WalletForm extends Component {
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
-          <option value="trabalho">Trabalho</option>
-          <option value="Trabalho">Transporte</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
           <option value="Saúde">Saúde</option>
         </select>
         <button
           type="button"
           onClick={ this.handleNewExpenseClickButton }
+          data-testid="add-button"
         >
           Adicionar despesa
         </button>
@@ -130,9 +131,8 @@ class WalletForm extends Component {
   };
 
   generateEditorFormElements = () => {
-    const { idToEdit, expenses } = this.props;
-    const currencyToEdit = expenses[idToEdit];
-    console.log(currencyToEdit);
+    // const { idToEdit, expenses } = this.props;
+    // const currencyToEdit = expenses[idToEdit];
     const {
       value,
       description,
@@ -177,12 +177,13 @@ class WalletForm extends Component {
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
-          <option value="trabalho">Trabalho</option>
-          <option value="Trabalho">Transporte</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
           <option value="Saúde">Saúde</option>
         </select>
         <button
           type="button"
+          data-testid="edit-button"
           onClick={ () => this.handleEditExpenseClickButton() }
         >
           Editar despesa
@@ -216,7 +217,7 @@ WalletForm.propTypes = {
     PropTypes.object.isRequired,
   ).isRequired,
   editor: PropTypes.bool.isRequired,
-  idToEdit: PropTypes.string.isRequired,
+  idToEdit: PropTypes.number.isRequired,
   saveEditExpense: PropTypes.func.isRequired,
 };
 
