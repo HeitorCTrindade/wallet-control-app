@@ -131,8 +131,6 @@ class WalletForm extends Component {
   };
 
   generateEditorFormElements = () => {
-    // const { idToEdit, expenses } = this.props;
-    // const currencyToEdit = expenses[idToEdit];
     const {
       value,
       description,
