@@ -26,6 +26,3 @@ describe('Testes LoginPage', () => {
     await waitFor(() => expect(history.location.pathname).toBe('/carteira'));
   });
 });
-
-// history.location
-//
