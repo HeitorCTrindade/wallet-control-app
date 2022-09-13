@@ -5,6 +5,8 @@ import App from '../App';
 import renderWithRouterAndRedux from './helpers/renderWith';
 import { expensesArray, expectTotalExpense, currenciesArray } from './data';
 
+const CURRENCY_INPUT = 'currency-input';
+
 describe('Test Wallet Page', () => {
   const initialState = {
     user: {
@@ -31,7 +33,7 @@ describe('Test Wallet Page', () => {
   });
 
   describe('Test Table Component', () => {
-    test('Se é possivel editar corretamente uma despesa criada', () => {
+    test('Se o formnulário de editar despesa é corretamente renderizado', () => {
       renderWithRouterAndRedux(<App />, { initialState, initialEntries });
       const editButton = screen.getAllByTestId('edit-btn');
       expect(editButton[0]).toBeInTheDocument();
@@ -54,7 +56,7 @@ describe('Test Wallet Page', () => {
   describe('Test WalletForm Component', () => {
     test('Se o campo select é renderizado com as opções de cambio corretas', () => {
       renderWithRouterAndRedux(<App />, { initialState, initialEntries });
-      const selectCurrencyElement = screen.getByTestId('currency-input');
+      const selectCurrencyElement = screen.getByTestId(CURRENCY_INPUT);
       expect(selectCurrencyElement).toBeInTheDocument();
       currenciesArray.forEach((testId) => {
         const optionSelectCurrencyElement = screen.getByRole('option', { name: testId });
@@ -62,11 +64,11 @@ describe('Test Wallet Page', () => {
       });
     });
 
-    test('Se é possivel adicionar dados de uma nova despea e salvar corretamente a despesa criada', async () => {
+    test('Se é possivel adicionar dados de uma nova despesa e salvar corretamente a despesa criada', async () => {
       renderWithRouterAndRedux(<App />, { initialState, initialEntries });
       const valueInput = screen.getByTestId('value-input');
       const description = screen.getByTestId('description-input');
-      const currencyInput = screen.getByTestId('currency-input');
+      const currencyInput = screen.getByTestId(CURRENCY_INPUT);
       const methodInput = screen.getByTestId('method-input');
       const tagInput = screen.getByTestId('tag-input');
       const addButton = screen.getByTestId('add-button');
@@ -80,6 +82,30 @@ describe('Test Wallet Page', () => {
 
       await waitFor(() => {
         expect(screen.getByText('New Currency Test')).toBeInTheDocument();
+      });
+    });
+
+    test('Se é possivel editar os dados de uma despesa e salvar corretamente ', async () => {
+      renderWithRouterAndRedux(<App />, { initialState, initialEntries });
+      const editButton = screen.getAllByTestId('edit-btn');
+      expect(editButton[0]).toBeInTheDocument();
+      userEvent.click(editButton[0]);
+      const valueInput = screen.getByTestId('value-input');
+      const description = screen.getByTestId('description-input');
+      const currencyInput = screen.getByTestId(CURRENCY_INPUT);
+      const methodInput = screen.getByTestId('method-input');
+      const tagInput = screen.getByTestId('tag-input');
+      const saveEditionButton = screen.getByTestId('edit-button');
+
+      userEvent.type(valueInput, '300');
+      userEvent.type(description, 'New HOT DOG');
+      userEvent.selectOptions(currencyInput, 'ETH');
+      userEvent.selectOptions(methodInput, 'Dinheiro');
+      userEvent.selectOptions(tagInput, 'Lazer');
+      userEvent.click(saveEditionButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('New HOT DOG')).toBeInTheDocument();
       });
     });
   });
